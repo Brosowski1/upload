@@ -1,0 +1,59 @@
+a) Para listar os valores definidos no arquivo php.ini, você pode acessá-lo através do botão "config" do Apache no XAMPP, ou pode usar o PHP para recuperar essas configurações. Aqui estão as configurações solicitadas:
+
+php
+Copy code
+<?php
+echo "file_uploads: " . ini_get("file_uploads") . "<br>";
+echo "upload_max_filesize: " . ini_get("upload_max_filesize") . "<br>";
+echo "upload_tmp_dir: " . ini_get("upload_tmp_dir") . "<br>";
+echo "post_max_size: " . ini_get("post_max_size") . "<br>";
+echo "max_input_time: " . ini_get("max_input_time") . "<br>";
+?>
+b) As funções is_uploaded_file() e move_uploaded_file() são usadas no contexto de upload de arquivos em PHP:
+
+is_uploaded_file(): Esta função verifica se o arquivo foi enviado via HTTP POST como parte de um formulário de upload. Ela recebe o caminho do arquivo como argumento e retorna true se o arquivo foi enviado via upload, caso contrário, retorna false.
+
+move_uploaded_file(): Essa função é usada para mover um arquivo carregado para um local específico no servidor. Ela recebe dois argumentos: o arquivo temporário (o nome do arquivo no servidor onde foi temporariamente armazenado) e o destino para onde você deseja mover o arquivo.
+
+c) A tag <input type="hidden"> é usada em formulários HTML para incluir campos que não são visíveis para o usuário. Ela é frequentemente usada para enviar dados ou valores que precisam ser processados pelo servidor, mas que não devem ser exibidos ou editados pelo usuário. Esses campos ocultos são úteis para passar informações como identificadores, tokens de segurança ou valores predefinidos para o servidor.
+
+d) Para filtrar as extensões de arquivo aceitas para upload em um programa PHP, você pode usar uma verificação no lado do servidor após o arquivo ter sido carregado. Aqui está um exemplo simples de como fazer isso:
+
+php
+Copy code
+<?php
+$allowedExtensions = array("jpg", "png", "bmp", "pdf"); // Extensões permitidas
+$uploadDir = "caminho/para/a/pasta/de/destino/"; // Diretório de destino para os uploads
+
+if ($_FILES["file"]["error"] == UPLOAD_ERR_OK) {
+    $filename = $_FILES["file"]["name"];
+    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+
+    // Verifica se a extensão do arquivo está na lista de extensões permitidas
+    if (in_array($extension, $allowedExtensions)) {
+        // Move o arquivo carregado para o diretório de destino
+        move_uploaded_file($_FILES["file"]["tmp_name"], $uploadDir . $filename);
+        echo "Arquivo enviado com sucesso!";
+    } else {
+        echo "Tipo de arquivo não permitido!";
+    }
+}
+?>
+Aqui estão os códigos HTML para fazer o upload de um arquivo de imagem e de um arquivo PDF:
+
+a) Para fazer o upload de um arquivo de imagem:
+
+html
+Copy code
+<form action="processa_upload.php" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit" value="Enviar Imagem">
+</form>
+b) Para fazer o upload de um arquivo PDF:
+
+html
+Copy code
+<form action="processa_upload.php" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit" value="Enviar PDF">
+</form>
